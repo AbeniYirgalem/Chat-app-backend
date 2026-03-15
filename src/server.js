@@ -13,22 +13,18 @@ const __dirname = path.resolve();
 const PORT = ENV.PORT || 5000;
 
 // Middleware
-app.use(express.json({ limit: "5mb" })); // Parse JSON
+app.use(express.json({ limit: "5mb" }));
 app.use(cors({ origin: ENV.CLIENT_URL, credentials: true }));
 app.use(cookieParser());
 
-// Routes
+// Test route
+app.get("/", (req, res) => {
+  res.send("Chat App Backend API is running 🚀");
+});
+
+// API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
-
-// Serve frontend in production
-if (ENV.NODE_ENV === "production") {
-  app.use(express.static(path.join(__dirname, "../frontend/dist")));
-
-  app.get("*", (_, res) => {
-    res.sendFile(path.join(__dirname, "../frontend/dist/index.html"));
-  });
-}
 
 // Connect DB first, then start server
 connectDB()
@@ -39,5 +35,5 @@ connectDB()
   })
   .catch((err) => {
     console.error("Failed to connect to DB:", err);
-    process.exit(1); // exit if DB fails
+    process.exit(1);
   });
