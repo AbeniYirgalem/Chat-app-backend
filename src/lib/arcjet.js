@@ -2,6 +2,14 @@ import arcjet, { shield, detectBot, slidingWindow } from "@arcjet/node";
 
 import { ENV } from "./env.js";
 
+// Default Arcjet environment to "development" locally to silence missing IP warnings
+const arcjetEnv =
+  ENV.ARCJET_ENV ||
+  (ENV.NODE_ENV === "development" ? "development" : undefined);
+if (arcjetEnv) {
+  process.env.ARCJET_ENV = arcjetEnv;
+}
+
 const aj = arcjet({
   key: ENV.ARCJET_KEY,
   rules: [

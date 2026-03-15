@@ -7,6 +7,9 @@ import { socketAuthMiddleware } from "../middleware/socket.auth.middleware.js";
 const app = express();
 const server = http.createServer(app);
 
+// Honor reverse proxy headers so req.ip is populated for security middleware like Arcjet
+app.set("trust proxy", true);
+
 const io = new Server(server, {
   cors: {
     origin: [ENV.CLIENT_URL],
